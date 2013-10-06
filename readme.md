@@ -14,19 +14,19 @@ python run.py db init
 This command creates the alembic migrations directory.
 Next, to create the first migration, type
 
-~~~.python
+~~~.bsh
 python run.py db migrate
 ~~~
 
 Then to upgrade type
 
-~~~.python
+~~~.bsh
 python run.py db upgrade
 ~~~
 
 And finally, to start the server,
 
-~~~.python
+~~~.bsh
 python run.py runserver
 ~~~
 
