@@ -5,10 +5,31 @@ Bones is a work-in-progress template for setting up a Flask project.
 
 Setup
 -----
-After cloning, initialize the database by opening up the python interpreter and typing
+After cloning, get everything started by opening up the python interpreter and typing
 
 ~~~.python
-from sand import db
-db.create_all()
+python run.py db init
 ~~~
+
+This command creates the alembic migrations directory.
+Next, to create the first migration, type
+
+~~~.python
+python run.py db migrate
+~~~
+
+Then to upgrade type
+
+~~~.python
+python run.py db upgrade
+~~~
+
+And finally, to start the server,
+
+~~~.python
+python run.py runserver
+~~~
+
+
+
 

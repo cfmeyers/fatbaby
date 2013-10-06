@@ -18,7 +18,7 @@ def reg_view(app, view, endpoint, url, methods=["GET", "POST"]):
 def register_api_views(app):
     app = reg_view(app, ThingsAPIView, "things_api", "/api/v1/things")
 
-def register_all_web_views(app):
+def register_web_views(app):
     app = reg_view(app, IndexView,     "/",        "/")
     app = reg_view(app, IndexView,     "index",    "/index")
     app = reg_view(app, ThingsWebView, "things",   "/things")
@@ -28,7 +28,7 @@ def create_app(config={}):
     app.config.from_object('myapp.config')
     app.config.update(config)
     db.init_app(app)
-    app = register_all_web_views(app)
+    app = register_web_views(app)
     app = register_api_views(app)
     Bootstrap(app)
     return app
