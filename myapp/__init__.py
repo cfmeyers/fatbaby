@@ -6,7 +6,7 @@ from flask.ext.migrate import Migrate
 from myapp.api.views_api import ThingsAPIView
 from myapp.web.views_web import ThingsWebView, IndexView
 
-from myapp import config
+import config
 from myapp.models import db
 
 
@@ -17,11 +17,13 @@ def reg_view(app, view, endpoint, url, methods=["GET", "POST"]):
 
 def register_api_views(app):
     app = reg_view(app, ThingsAPIView, "things_api", "/api/v1/things")
+    return app
 
 def register_web_views(app):
     app = reg_view(app, IndexView,     "/",        "/")
     app = reg_view(app, IndexView,     "index",    "/index")
     app = reg_view(app, ThingsWebView, "things",   "/things")
+    return app
 
 def create_app(config={}):
     app = Flask(__name__)
