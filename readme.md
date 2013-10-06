@@ -33,6 +33,7 @@ And finally, to start the server,
 
 Structure
 =========
+
 ├── LICENSE
 ├── myapp
 │   ├── __init__.py
@@ -49,6 +50,7 @@ Structure
 │   └── web
 │       ├── __init__.py
 │       └── views_web.py
+
 ├── readme.md
 ├── requirements.txt
 ├── run.py
