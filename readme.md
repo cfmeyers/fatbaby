@@ -18,7 +18,7 @@ Next, to create the first migration, type
 ~/bones $  python run.py db migrate
 ~~~
 
-Your SQLite database file, `myapp.db`, will get created by that command.
+Your SQLite database file, `bones/myapp/myapp.db`, will get created by that command.
 Next, to upgrade type
 
 ~~~.bsh

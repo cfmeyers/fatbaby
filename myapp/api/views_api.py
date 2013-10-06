@@ -1,3 +1,4 @@
+from collections import defaultdict
 from flask.views import View, MethodView
 from flask import request, jsonify, abort
 from myapp import models
@@ -61,7 +62,7 @@ class ThingsAPIView(APIView):
         return parse_request_to_create_object(request)
 
     def create_item(self, inputDict):
-        return models.get_or_create(db, models.Things, inputDict)
+        return models.get_or_create(db, models.Things, **inputDict)
 
 
     ##GET only
