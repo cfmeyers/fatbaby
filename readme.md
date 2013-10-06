@@ -31,6 +31,28 @@ And finally, to start the server,
 ~/bones $  python run.py runserver
 ~~~
 
+Structure
+=========
+├── LICENSE
+├── myapp
+│   ├── __init__.py
+│   ├── api
+│   │   ├── __init__.py
+│   │   └── views_api.py
+│   ├── config.py
+│   ├── models.py
+│   ├── static
+│   ├── templates
+│   │   ├── base.html
+│   │   ├── index.html
+│   │   └── things.html
+│   └── web
+│       ├── __init__.py
+│       └── views_web.py
+├── readme.md
+├── requirements.txt
+├── run.py
+└── tests
 
 
 
