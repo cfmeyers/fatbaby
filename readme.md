@@ -42,7 +42,7 @@ Structure
 │   │   └── views_api.py
 │   ├── config.py
 │   ├── models.py
-│   ├── static
+│   ├── static/
 │   ├── templates
 │   │   ├── base.html
 │   │   ├── index.html
@@ -53,6 +53,20 @@ Structure
 ├── readme.md
 ├── requirements.txt
 ├── run.py
-└── tests
+└── tests/
 ~~~
+
+Root Directory
+--------------
+
+The root directory holds the myapp directory, tests directory, and, when the app is initialized per above instructions, the migrations directory.  The ```run.py``` file imports the myapp package and runs the server.
+
+```___init___.py```.bash file
+-----------------------------
+
+The bulk of the Flask app is in the myapp package.  The myapp directory has an ```___init___.py```.bash file that imports the database, models, and views, and has the ```create_app()```.python function.  When the myapp package is first imported, the ```create_app()```.python function gets called and an app is created.  Inside that function the app is associated with the database ```db```.python , and the views are registered to the app.
+
+```models.py```.python file
+-----
+
 
