@@ -6,27 +6,27 @@ Bones is a work-in-progress template for setting up a Flask project.  It uses [F
 
 After cloning, get everything started by opening up the python interpreter and typing
 
-~~~.bsh
+~~~.bash
 ~/bones $  python run.py db init
 ~~~
 
 This command creates the alembic migrations directory.
 Next, to create the first migration, type
 
-~~~.bsh
+~~~.bash
 ~/bones $  python run.py db migrate
 ~~~
 
 Your SQLite database file, `bones/myapp/myapp.db`, will get created by that command.
 Next, to upgrade type
 
-~~~.bsh
+~~~.bash
 ~/bones $  python run.py db upgrade
 ~~~
 
 And finally, to start the server,
 
-~~~.bsh
+~~~.bash
 ~/bones $  python run.py runserver
 ~~~
 
@@ -92,7 +92,10 @@ Handles web page views.  Straightforward.  Base class is `ListView`.  Classes th
 
 ##Testing
 
+~~~bash
+tdaemon -t nose --custom-args="--with-nosegrowlnotify -v"
+~~~
 
+##Inspired By
 
-
-
+[Fbone](https://github.com/imwilsonxu/fbone)
