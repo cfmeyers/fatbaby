@@ -22,7 +22,7 @@ class TestCase(Base):
     SQLALCHEMY_DATABASE_URI = "sqlite://"
     TESTING = True
 
-   def create_app(self):
+    def create_app(self):
         configs = {"SQLALCHEMY_DATABASE_URI":self.SQLALCHEMY_DATABASE_URI, "TESTING":self.TESTING}
 
         return create_app(configs)

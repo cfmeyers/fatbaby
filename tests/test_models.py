@@ -1,6 +1,9 @@
+import sys, unittest
+sys.path.append("../")
 
 from tests import TestCase
-from models import Things
+from myapp import models
+from myapp.models import db, Things
 
 
 class TestThings(TestCase):
@@ -16,5 +19,6 @@ class TestThings(TestCase):
        db.session.add(thing)
        db.session.commit()
        assert db.session.query(Things).filter(Things.name=="test").first()
-       db.session.delete(task)
+       db.session.delete(thing)
+       db.session.commit()
        assert not db.session.query(Things).filter(Things.name=="test").first()
