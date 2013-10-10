@@ -1,7 +1,9 @@
 from flask.views import View, MethodView
-from flask import render_template, request
+from flask import render_template, request, flash, redirect
 from myapp import models
+from myapp.forms import LoginForm
 from myapp.models import db
+from myapp import config
 
 class IndexView(View):
     """IndexView"""
@@ -9,6 +11,30 @@ class IndexView(View):
 
     def dispatch_request(self):
         return render_template("index.html")
+
+class LoginView(View):
+    """IndexView"""
+    methods = ['GET', 'POST']
+
+    def dispatch_request(self):
+        form = LoginForm()
+
+        ##validate_on_submit gathers all the data from submitted form,
+        ##runs the validators on it, and if the data is valid returns true
+        if form.validate_on_submit():
+
+            ##creates a flash message
+            flash('Login requested for OpenID="'
+                                          + form.openid.data
+                                          + '", remember_me='
+                                          + str(form.remember_me.data))
+
+            ##returns user to /index
+            return redirect('/index')
+
+        return render_template("login.html",
+                                form=form,
+                                providers = config.OPENID_PROVIDERS)
 
 
 class ListView(View):

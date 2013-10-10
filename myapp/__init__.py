@@ -4,7 +4,7 @@ from flask_bootstrap import Bootstrap
 from flask.ext.migrate import Migrate
 
 from myapp.api.views_api import ThingsAPIView
-from myapp.web.views_web import ThingsWebView, IndexView
+from myapp.web.views_web import ThingsWebView, IndexView, LoginView
 
 import config
 from myapp.models import db
@@ -20,6 +20,7 @@ def register_api_views(app):
     return app
 
 def register_web_views(app):
+    app = reg_view(app, LoginView,     "login",    "/login")
     app = reg_view(app, IndexView,     "/",        "/")
     app = reg_view(app, IndexView,     "index",    "/index")
     app = reg_view(app, ThingsWebView, "things",   "/things")
