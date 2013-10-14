@@ -8,6 +8,7 @@
     <ul class="nav navbar-nav">
         <li><a href="/things">things</a></li>
         <li><a href="/login">login</a></li>
+        <li><a href="/logout">logout</a></li>
     </ul>
   </div>
 {% endblock %}
@@ -34,6 +35,11 @@
 
 
 </div>
+
+    {% if g.user %}
+      <p>USER is {{g.user.name}}</p>
+    {% endif %}
+
     {% block sub_content %}
 
     {% endblock %}

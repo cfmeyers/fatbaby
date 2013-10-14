@@ -1,43 +1,73 @@
-from flask.views import View, MethodView
-from flask import render_template, request, flash, redirect
-from myapp import models
-from myapp.forms import LoginForm
-from myapp.models import db
-from myapp import config
+from flask import (render_template, flash, redirect,
+                   views, session, url_for, request, g)
+from myapp import models, config, forms
+from myapp.models import lm, db, User
+from flask.ext.login import (login_user, logout_user,
+                            current_user, login_required)
 
-class IndexView(View):
+def before_request():
+    g.user = current_user
+
+@lm.user_loader
+def load_user(id):
+    return models.User.query.get(int(id))
+
+def bad_validate(name, password):
+    user = db.session.query(User).filter(User.name==name).first()
+
+    if user and user.check_password(password):
+        return user
+
+    return False
+
+class IndexView(views.View):
     """IndexView"""
+
     methods = ["GET"]
 
     def dispatch_request(self):
         return render_template("index.html")
 
-class LoginView(View):
+class LoginView(views.View):
     """IndexView"""
     methods = ['GET', 'POST']
 
     def dispatch_request(self):
-        form = LoginForm()
 
-        ##validate_on_submit gathers all the data from submitted form,
-        ##runs the validators on it, and if the data is valid returns true
+        if g.user is not None and g.user.is_authenticated():
+            return redirect(url_for('index'))
+
+        form = forms.LoginForm()
+
         if form.validate_on_submit():
+            user = bad_validate(form.username.data, form.password.data)
+            if user:
+                login_user(user, form.remember_me.data)
+                flash('Login requested for username="'
+                      + form.username.data
+                      + '", Login requested for password="'
+                      + form.password.data
+                      + '", remember_me='
+                      + str(form.remember_me.data))
 
-            ##creates a flash message
-            flash('Login requested for OpenID="'
-                                          + form.openid.data
-                                          + '", remember_me='
-                                          + str(form.remember_me.data))
-
-            ##returns user to /index
-            return redirect('/index')
-
-        return render_template("login.html",
-                                form=form,
-                                providers = config.OPENID_PROVIDERS)
+                return redirect('/index')
+            else:
+                flash('failed to authenticate')
+                return redirect('/login')
 
 
-class ListView(View):
+        return render_template("login.html", form=form)
+
+class LogoutView(views.View):
+    """IndexView"""
+
+    methods = ['GET', 'POST']
+
+    def dispatch_request(self):
+        logout_user()
+        return redirect(url_for('index'))
+
+class ListView(views.View):
     """Generic ListView for a model"""
     methods = ["GET"]
     def get_template_name(self): raise NotImplementedError
@@ -56,4 +86,7 @@ class ThingsWebView(ListView):
     def get_template_name(self): return "things.html"
     def get_objects(self): return models.Things.query.all()
     def get_title(self): return "Things"
+
+
+
 

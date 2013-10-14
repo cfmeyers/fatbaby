@@ -44,8 +44,7 @@ class TestThingsAPIView(TestCase):
 
     def test_POST_Things_API(self):
         url = get_endpoint("things")
-        postData = json.dumps({'name':'my item'})
-        data = {'name':'my item'}
+        postData = json.dumps({'name':'my item', 'key':'mykey'})
         response = self.client.post(url, data=postData, headers=JSON_HEADERS)
 
         assert not table_is_empty(self.client, url, "things")
