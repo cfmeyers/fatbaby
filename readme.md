@@ -1,6 +1,19 @@
 #Bones
 
-Bones is a work-in-progress template for setting up a Flask project.  It uses [Flask-Bootstrap](https://github.com/mbr/flask-bootstrap) , Flask-SQLAlchemy, [Flask-Migrate](https://github.com/miguelgrinberg/Flask-Migrate), with [Flask-Testing](https://github.com/jarus/flask-testing), [nose](http://nose.readthedocs.org/en/latest/) and [tdaemon](https://github.com/brunobord/tdaemon) for testing.
+Bones is a work-in-progress template for setting up a Flask project.  It uses
+
+-  [Flask-Bootstrap](https://github.com/mbr/flask-bootstrap)
+-  [Flask-SQLAlchemy]()
+-  [Flask-Login]()
+-  [Flask-WTF]()
+-  [Flask-Script]()
+-  [Flask-Migrate](https://github.com/miguelgrinberg/Flask-Migrate)
+
+####Testing
+
+-  [Flask-Testing](https://github.com/jarus/flask-testing)
+-  [nose](http://nose.readthedocs.org/en/latest/)
+-  [tdaemon](https://github.com/brunobord/tdaemon)
 
 ##Setup
 
@@ -22,6 +35,12 @@ Next, to upgrade type
 
 ~~~.bash
 ~/bones $  python run.py db upgrade
+~~~
+
+All these steps can be executed in one fell swoop with the `init.sh` script:
+
+~~~bash
+~/bones $  bash init.sh
 ~~~
 
 And finally, to start the server,
@@ -96,6 +115,84 @@ Handles web page views.  Straightforward.  Base class is `ListView`.  Classes th
 tdaemon -t nose --custom-args="--with-nosegrowlnotify -v"
 ~~~
 
+
+####User Logins
+
+Bones uses [Flask-Login]() to login users.  A user is modeled by the SQLAlchemy class `User`.  Per Flask-Login, the following methods have to be defined  for `User`:
+~~~python
+
+set_password(self, password)
+check_password(self, password)
+is_authenticated(self)
+def is_active(self)
+is_anonymous(self)
+get_id(self)
+
+~~~
+
+For the reasons for each of these methods, see the [Flask-Login docs]().
+
+All of the tutorials and examples for integrating Flask-Login into your app assume that you're not using an app-factory approach and you are using "app-defined" routes (e.g. `@app.route('/')`).  In order to facilitate my app-factory and pluggable views architecture I had to make some changes:
+
+#####login manager
+
+The examples I've run across instantiate the login manager object and also bind it to the app in the `__init__.py` file (after the app is created), much like the db object is for Flask-SQLAlchemy.
+
+`__init__.py`
+~~~python
+
+from flask.ext.login import LoginManager
+app = Flask(__name__)
+lm = LoginManager(app)
+
+~~~
+
+This doesn't work with an app-factory approach.  Instead, I put the  "login manager" object in the `models.py` file.  I then imported it into the `__init__.py` file and bound it to the app inside of the `create_app()` function.
+
+
+`__init__.py`
+~~~python
+
+from myapp.models import lm
+def create_app(config={}):
+    app = Flask(__name__)
+    ...
+    lm.init_app(app)
+    ...
+    return app
+
+~~~
+
+`models.py`
+~~~python
+from flask.ext.login import LoginManager
+lm = LoginManager()
+~~~
+
+#####Decorated Flask-Login methods (with pluggable views)
+
+Since I've got pluggable views, I didn't think I could decorate a method with the `@lm.load_user` method.  I was wrong.  No problem with that, so long as you instantiate the `lm` (login manager) object before you call the view or function that's been decorated with @lm.  I put my `user_loader()` function in my `views_web.py` module.
+
+#####before_request()
+
+In order to have access to the current user at all times, I created a `before_request()` function that runs before each request (ala [Michael Gruenberg's megaflask tutorial]()).  I then imported that function from `views_web.py` into `__init__.py` and decorated with Flask's `before_request` decorator:
+
+~~~python
+...
+app = create_app()
+app.before_request(before_request)
+...
+
+~~~
+
+I can now access the g.user variable even in templates.
+
+##API Key
+
+Implemented an API key in the `APIView` class of `views_api.py` module. At this time only works for POST.
+
+
 ##Inspired By
 
-[Fbone](https://github.com/imwilsonxu/fbone)
+-  [Fbone](https://github.com/imwilsonxu/fbone)
+-  [Miguel Gruenberg's Flask Mega-Tutorial]()
