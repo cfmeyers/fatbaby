@@ -11,6 +11,7 @@ from myapp.models import db, lm, User
 
 
 def reg_view(app, view, endpoint, url, methods=["GET", "POST"]):
+    view.APIKEY = app.config['APIKEY']
     view_func = view.as_view(endpoint)
     app.add_url_rule(url, view_func=view_func, methods=methods)
     return app
@@ -35,13 +36,12 @@ def create_app(config={}):
 
     db.init_app(app)
     lm.init_app(app)
-    app.debug = True
+    # app.debug = True
     app = register_web_views(app)
     app = register_api_views(app)
     Bootstrap(app)
 
     return app
-
 app = create_app()
 app.before_request(before_request)
 migrate = Migrate(app, models.db)

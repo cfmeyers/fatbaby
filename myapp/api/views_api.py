@@ -25,6 +25,7 @@ def parse_request_to_create_object(request):
 ##Base View Class (for POSTs and GETs)
 class APIView(MethodView):
     """APIView is the base class for all the API views"""
+    APIKEY = "monkey patch this value"
 
     ##GET and POST both
     def get_model_name(self): raise NotImplementedError
@@ -37,7 +38,8 @@ class APIView(MethodView):
     def get_items(self): raise NotImplementedError
 
     def check_api_key(self, key):
-        if key == "mykey":
+        # if key == "mykey":
+        if key == self.APIKEY:
             return True
         return False
 
