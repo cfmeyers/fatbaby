@@ -6,7 +6,6 @@ from flask.ext.migrate import MigrateCommand
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
-manager.add_command('add-admin', scripts.AdminUser())
 manager.add_command('add-user', scripts.AddUser())
 
 if __name__=="__main__":

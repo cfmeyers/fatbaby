@@ -1,14 +1,6 @@
 from flask.ext.script import Command, Option
 from myapp.models import db, Things, User
 
-class AdminUser(Command):
-    "add admin user"
-
-    def run(self):
-        user = User("admin", "password")
-        db.session.add(user)
-        db.session.commit()
-
 class AddUser(Command):
     "add a user"
 
