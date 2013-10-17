@@ -3,10 +3,10 @@
 Bones is a work-in-progress template for setting up a Flask project.  It uses
 
 -  [Flask-Bootstrap](https://github.com/mbr/flask-bootstrap)
--  [Flask-SQLAlchemy]()
--  [Flask-Login]()
--  [Flask-WTF]()
--  [Flask-Script]()
+-  [Flask-SQLAlchemy](http://pythonhosted.org/Flask-SQLAlchemy/)
+-  [Flask-Login](http://flask-login.readthedocs.org/en/latest/)
+-  [Flask-WTF](https://flask-wtf.readthedocs.org/en/latest/)
+-  [Flask-Script](http://flask-script.readthedocs.org/en/latest/)
 -  [Flask-Migrate](https://github.com/miguelgrinberg/Flask-Migrate)
 
 ####Testing
@@ -118,7 +118,7 @@ tdaemon -t nose --custom-args="--with-nosegrowlnotify -v"
 
 ####User Logins
 
-Bones uses [Flask-Login]() to login users.  A user is modeled by the SQLAlchemy class `User`.  Per Flask-Login, the following methods have to be defined  for `User`:
+Bones uses [Flask-Login](http://flask-login.readthedocs.org/en/latest/) to login users.  A user is modeled by the SQLAlchemy class `User`.  Per Flask-Login, the following methods have to be defined  for `User`:
 ~~~python
 
 set_password(self, password)
@@ -130,7 +130,7 @@ get_id(self)
 
 ~~~
 
-For the reasons for each of these methods, see the [Flask-Login docs]().
+For the reasons for each of these methods, see the [Flask-Login docs](http://flask-login.readthedocs.org/en/latest/).
 
 All of the tutorials and examples for integrating Flask-Login into your app assume that you're not using an app-factory approach and you are using "app-defined" routes (e.g. `@app.route('/')`).  In order to facilitate my app-factory and pluggable views architecture I had to make some changes:
 
@@ -175,7 +175,7 @@ Since I've got pluggable views, I didn't think I could decorate a method with th
 
 #####before_request()
 
-In order to have access to the current user at all times, I created a `before_request()` function that runs before each request (ala [Michael Gruenberg's megaflask tutorial]()).  I then imported that function from `views_web.py` into `__init__.py` and decorated with Flask's `before_request` decorator:
+In order to have access to the current user at all times, I created a `before_request()` function that runs before each request (ala [Michael Gruenberg's megaflask tutorial](http://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-v-user-logins)).  I then imported that function from `views_web.py` into `__init__.py` and decorated with Flask's `before_request` decorator:
 
 ~~~python
 ...
@@ -195,4 +195,4 @@ Implemented an API key in the `APIView` class of `views_api.py` module. At this 
 ##Inspired By
 
 -  [Fbone](https://github.com/imwilsonxu/fbone)
--  [Miguel Gruenberg's Flask Mega-Tutorial]()
+-  [Miguel Gruenberg's Flask Mega-Tutorial](http://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world)
