@@ -1,3 +1,4 @@
 *.pyc
 migrations/*
 myapp/myapp.db
+myapp/config_deploy.py
