@@ -6,7 +6,7 @@ from flask.ext.migrate import Migrate
 from myapp.api.views_api import ThingsAPIView
 from myapp.web.views_web import ThingsWebView, IndexView, LoginView, LogoutView, before_request
 
-import config
+import config_dev
 from myapp.models import db, lm, User
 
 
@@ -30,8 +30,9 @@ def register_web_views(app):
 
 def create_app(config={}):
     app = Flask(__name__)
-    app.config.from_object('myapp.config')
+    app.config.from_object('myapp.config_dev')
     app.config.update(config)
+
     db.init_app(app)
     lm.init_app(app)
     app.debug = True

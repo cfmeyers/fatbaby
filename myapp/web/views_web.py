@@ -1,6 +1,6 @@
 from flask import (render_template, flash, redirect,
                    views, session, url_for, request, g)
-from myapp import models, config, forms
+from myapp import models, forms
 from myapp.models import lm, db, User
 from flask.ext.login import (login_user, logout_user,
                             current_user, login_required)

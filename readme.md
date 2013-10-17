@@ -121,12 +121,18 @@ tdaemon -t nose --custom-args="--with-nosegrowlnotify -v"
 Bones uses [Flask-Login](http://flask-login.readthedocs.org/en/latest/) to login users.  A user is modeled by the SQLAlchemy class `User`.  Per Flask-Login, the following methods have to be defined  for `User`:
 ~~~python
 
-set_password(self, password)
-check_password(self, password)
-is_authenticated(self)
-def is_active(self)
-is_anonymous(self)
-get_id(self)
+def set_password(self, password):
+    ...
+def check_password(self, password):
+    ...
+def is_authenticated(self):
+    ...
+def is_active(self):
+    ...
+def is_anonymous(self):
+    ...
+def get_id(self):
+    ...
 
 ~~~
 
