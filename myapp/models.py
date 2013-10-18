@@ -17,6 +17,98 @@ def get_or_create(db, model, **kwargs):
         instance = model(**kwargs)
         return instance
 
+
+########################################################################
+class Weighings(db.Model):
+    """"""
+    __tablename__ = "weighings"
+
+    id   = db.Column(db.Integer, primary_key=True)
+    time = db.Column(db.DateTime)
+    ounces = db.Column(db.Float)
+
+    user_id =db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship("User",
+                            backref=db.backref('weighings', order_by=id))
+
+    def set_weight(self, oz=0.0, lbs=0.0):
+        self.ounces = lbs*16 + oz
+
+########################################################################
+class Feedings(db.Model):
+    """"""
+    __tablename__ = "feedings"
+
+    id   = db.Column(db.Integer, primary_key=True)
+    time = db.Column(db.DateTime)
+    ounces = db.Column(db.Float)
+
+    user_id =db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship("User",
+                            backref=db.backref('feedings', order_by=id))
+
+########################################################################
+
+class WetDiapers(db.Model):
+    """"""
+    __tablename__ = "wetdiapers"
+
+    id   = db.Column(db.Integer, primary_key=True)
+    time = db.Column(db.DateTime)
+
+    user_id =db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship("User",
+                            backref=db.backref('wetdiapers', order_by=id))
+
+
+########################################################################
+class DirtyDiapers(db.Model):
+    """"""
+    __tablename__ = "dirtydiapers"
+
+    id   = db.Column(db.Integer, primary_key=True)
+    time = db.Column(db.DateTime)
+    magnitude = db.Column(db.Integer)
+
+    user_id =db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship("User",
+                            backref=db.backref('dirtydiapers', order_by=id))
+
+########################################################################
+class NapStarts(db.Model):
+    """"""
+    __tablename__ = "napstarts"
+
+    id   = db.Column(db.Integer, primary_key=True)
+    time = db.Column(db.DateTime)
+
+    user_id =db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship("User",
+                            backref=db.backref('napstarts', order_by=id))
+
+########################################################################
+class Wakings(db.Model):
+    """"""
+    __tablename__ = "wakings"
+    id   = db.Column(db.Integer, primary_key=True)
+    time = db.Column(db.DateTime)
+    interval = db.Column(db.Interval)
+    note = db.Column(db.Text)
+
+    napstart_id =db.Column(db.Integer, db.ForeignKey('napstarts.id'))
+    napstart = db.relationship("NapStarts",
+                            backref=db.backref('wakings', order_by=id))
+
+    user_id =db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship("User",
+                            backref=db.backref('wakings', order_by=id))
+
+
+
+    def set_start(self, napstart):
+        self.napstart=napstart
+        self.interval = self.time - napstart.time
+
 ########################################################################
 class Things(db.Model):
     """"""
