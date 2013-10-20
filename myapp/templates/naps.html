@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block sub_content %}
+<table class="table">
+<thead>
+    <tr>
+        <th>start</th>
+        <!-- <th style="width:800px">end</th> -->
+        <th>end</th>
+    </tr>
+</thead>
+    {% for nap in objects %}
+        <tr>
+            <td>{{nap.start.time.strftime('%a %d-%b, %H:%M:%S')}}</td>
+            <td>{{nap.end.time.strftime('%a %d-%b, %H:%M:%S')}}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

@@ -8,7 +8,7 @@ class AddUser(Command):
         return [
             Option('-n', '--name', dest='name'),
             Option('-p', '--password', dest='password'),
-            Option('-r', '--role', dest='0 for user, 1 for admin', default=0)
+            Option('-r', '--role', dest='role', default=0)
         ]
 
     def run(self, name, password, role):
@@ -22,6 +22,7 @@ class AddUser(Command):
                 print "role must be 0 or 1"
                 return
             user.role = role
+        print "username is ", name
 
         db.session.add(user)
         db.session.commit()

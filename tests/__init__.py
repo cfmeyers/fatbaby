@@ -8,12 +8,18 @@
     https://github.com/imwilsonxu/fbone/blob/master/tests/__init__.py
 """
 
-import sys, unittest
+import sys, unittest, json
 sys.path.append("../")
 
 from flask.ext.testing import TestCase as Base
 from myapp import create_app, db, models
 from myapp.models import *
+
+def add_item_to_db(db, model, **kwargs):
+    item = get_or_create(db, model, **kwargs)
+    db.session.add(item)
+    db.session.commit()
+    return item
 
 class TestCase(Base):
     """Base TestClass for your application."""
@@ -36,8 +42,24 @@ class TestCase(Base):
         db.drop_all()
 
 
+# class HelpEventsAPIView(object):
 
+#     PATH              = "/api/v1/"
+#     JSON_HEADERS = {'Content-type': 'application/json'}
 
+#     def get_endpoint(self, resourceName, fully_qualified=False):
+#         return self.PATH+resourceName.lower()
+
+#     def table_is_empty(self, client, url, resourceName):
+#         response = client.get(url)
+#         return not response.json[resourceName.lower()]
+
+#     def POST_API(self):
+#         url = self.get_endpoint(self.resource)
+#         postJSON = json.dumps(self.postData)
+#         response = self.client.post(url, data=postJSON, headers=self.JSON_HEADERS)
+
+#         assert not self.table_is_empty(self.client, url, resource)
 
 
 

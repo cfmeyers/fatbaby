@@ -87,6 +87,29 @@ class ThingsWebView(ListView):
     def get_objects(self): return models.Things.query.all()
     def get_title(self): return "Things"
 
+class DirtyDiapersWebView(ListView):
+    def get_template_name(self): return "diapers.html"
+    def get_objects(self): return models.DirtyDiapers.query.all()
+    def get_title(self): return "Dirty Diapers"
 
+class WetDiapersWebView(ListView):
+    def get_template_name(self): return "diapers.html"
+    def get_objects(self): return models.WetDiapers.query.all()
+    def get_title(self): return "Wet Diapers"
 
+class FeedingsWebView(ListView):
+    def get_template_name(self): return "feedings.html"
+    def get_objects(self): return models.Feedings.query.all()
+    def get_title(self): return "Feedings"
+
+class NapsWebView(ListView):
+    def get_template_name(self): return "naps.html"
+    def get_objects(self):return models.Naps.query.all()
+    # def get_objects(self):return "TEST"
+    def get_title(self): return "Naps"
+
+class WeighingsWebView(ListView):
+    def get_template_name(self): return "weighings.html"
+    def get_objects(self): return models.Weighings.query.all()
+    def get_title(self): return "Weight"
 

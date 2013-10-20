@@ -1,30 +1,15 @@
 import sys, unittest
 sys.path.append("../")
-from tests import TestCase
-from datetime import datetime
-from myapp import models
+from tests import TestCase, add_item_to_db
+from datetime import datetime, timedelta
+from myapp import models, utils
 from myapp.models import (db, Things, User, DirtyDiapers, WetDiapers,
                           NapStarts, Wakings, Weighings, Feedings)
+from myapp.api import views_api
 
 def add_and_commit(item):
     db.session.add(item)
     db.session.commit()
-
-class TestThings(TestCase):
-    def test_add_Thing_to_db(self):
-        thing = models.Things("test")
-        db.session.add(thing)
-        db.session.commit()
-        assert db.session.query(Things).filter(Things.name=="test").first()
-
-    def test_delete_Thing_to_db(self):
-        thing = models.Things("test")
-        db.session.add(thing)
-        db.session.commit()
-        assert db.session.query(Things).filter(Things.name=="test").first()
-        db.session.delete(thing)
-        db.session.commit()
-        assert not db.session.query(Things).filter(Things.name=="test").first()
 
 class TestUser(TestCase):
 
@@ -96,13 +81,46 @@ class TestWetDiapers(TestCase):
         add_and_commit(diaper)
         assert db.session.query(WetDiapers).filter(WetDiapers.time==now).first()
 
-    def test_waking_napstart(self):
+class TestNaps(TestCase):
+    def test_Naps_interval(self):
         now = datetime.now()
         start = models.NapStarts(time=now)
         newnow = datetime.now()
         wake = models.Wakings(time=newnow)
-        wake.set_start(start)
-        assert wake.interval == newnow - now
+        nap = models.Naps(start, wake)
+        assert nap.interval == newnow - now
+
+
+    def test_get_starts(self):
+        now = datetime.now()
+        twoMinute = timedelta(minutes=2)
+        starts = [add_item_to_db(db, models.NapStarts,time=now+i*twoMinute) \
+                                                    for i in range(5)]
+        for i, start in enumerate(starts[:-1]):
+            stop = add_item_to_db(db, models.Wakings, time=(now+(2*i)*twoMinute))
+            add_item_to_db(db, models.Naps, start=start, end=stop)
+
+
+        naps = db.session.query(models.Naps).all()
+        # print "Naps"
+        # for nap in naps:
+            # print nap, nap.start, nap.end
+        starts_with_naps = [nap.start for nap in naps]
+
+        # print "from the database"
+        dbStarts = db.session.query(models.NapStarts).all()
+        # for start in dbStarts:
+        #     print start, start.nap
+
+        # assert False
+        testStarts = views_api.get_nap_starts(db)
+
+        # print "test starts"
+        for start in testStarts:
+            assert start not in starts_with_naps
+
+
+
 
 
 class TestWeights(TestCase):

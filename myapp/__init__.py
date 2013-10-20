@@ -3,8 +3,15 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 from flask.ext.migrate import Migrate
 
-from myapp.api.views_api import ThingsAPIView
-from myapp.web.views_web import ThingsWebView, IndexView, LoginView, LogoutView, before_request
+from myapp.api.views_api import (ThingsAPIView, DirtyDiapersAPIView,
+                                WetDiapersAPIView, FeedingsAPIView,
+                                WeighingsAPIView, NapStartsAPIView,
+                                WakingsAPIView)
+
+from myapp.web.views_web import (ThingsWebView, IndexView, LoginView,
+                                LogoutView, before_request, DirtyDiapersWebView,
+                                WetDiapersWebView, FeedingsWebView,
+                                WeighingsWebView, NapsWebView)
 
 import config_dev
 from myapp.models import db, lm, User
@@ -17,7 +24,14 @@ def reg_view(app, view, endpoint, url, methods=["GET", "POST"]):
     return app
 
 def register_api_views(app):
-    app = reg_view(app, ThingsAPIView, "things_api", "/api/v1/things")
+    PATH = "/api/v1/"
+    app = reg_view(app, ThingsAPIView, "things_api", PATH+"things")
+    app = reg_view(app, DirtyDiapersAPIView, "ddiapers_api", PATH+"dirtydiapers")
+    app = reg_view(app, WetDiapersAPIView, "wdiapers_api", PATH+"wetdiapers")
+    app = reg_view(app, FeedingsAPIView, "feedings_api", PATH+"feedings")
+    app = reg_view(app, WeighingsAPIView, "weighings_api", PATH+"weighings")
+    app = reg_view(app, NapStartsAPIView, "napstarts_api", PATH+"napstarts")
+    app = reg_view(app, WakingsAPIView, "wakings_api", PATH+"wakings")
     return app
 
 def register_web_views(app):
@@ -26,6 +40,11 @@ def register_web_views(app):
     app = reg_view(app, IndexView,     "/",        "/")
     app = reg_view(app, IndexView,     "index",    "/index")
     app = reg_view(app, ThingsWebView, "things",   "/things")
+    app = reg_view(app, DirtyDiapersWebView, "dirtydiapers",   "/dirtydiapers")
+    app = reg_view(app, WetDiapersWebView, "wetdiapers",   "/wetdiapers")
+    app = reg_view(app, FeedingsWebView, "feedings",   "/feedings")
+    app = reg_view(app, WeighingsWebView, "weighings",   "/weighings")
+    app = reg_view(app, NapsWebView, "naps",   "/naps")
     return app
 
 

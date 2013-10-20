@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block sub_content %}
+
+    {% for diaper in objects %}
+        <p>{{diaper.time}}</p>
+    {% endfor %}
+
+{% endblock %}

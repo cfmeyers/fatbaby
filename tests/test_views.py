@@ -1,22 +1,23 @@
 import sys, unittest, json
 sys.path.append("../")
 
-from tests import TestCase
+from tests import TestCase, add_item_to_db
 from myapp import models
 from myapp.models import db, Things
 
-API_V1              = "/api/v1/"
+PATH              = "/api/v1/"
 JSON_HEADERS = {'Content-type': 'application/json'}
 
-def helper_add_item_to_db(db, model, **kwargs):
-    item = models.get_or_create(db, model, **kwargs)
-    db.session.add(item)
-    db.session.commit()
+def get_response(client, resource, postData, headers):
+    url = get_endpoint(resource)
+    postJSON = json.dumps(postData)
+    return client.post(url, data=postJSON, headers=headers)
 
 def get_endpoint(resourceName, fully_qualified=False):
-    return API_V1+resourceName.lower()
+    return PATH+resourceName.lower()
 
-def table_is_empty(client, url, resourceName):
+def table_is_empty(client, resourceName):
+    url = get_endpoint(resourceName)
     response = client.get(url)
     return not response.json[resourceName.lower()]
 
@@ -27,27 +28,66 @@ def verify_my_item_in_db(modelName, client):
 
         #verify no things in the db via the API
         response = client.get(url)
-        assert table_is_empty(client, url, resource)
+        assert table_is_empty(client, resource)
 
         #add a thing manually to the db
-        helper_add_item_to_db(db, model, **{"name":"my item"})
+        add_item_to_db(db, model, **{"name":"my item"})
         response2 = client.get(url)
 
         #verify there is a thing in the db via the API
         return response2.json[resource][0] == "my item"
 
 
-class TestThingsAPIView(TestCase):
+class TestDirtyDiapersAPIView(TestCase):
 
-    def test_GET_Things_API(self):
-        assert verify_my_item_in_db("Things", self.client)
-
-    def test_POST_Things_API(self):
-        url = get_endpoint("things")
-        postData = json.dumps({'name':'my item', 'key':'mykey'})
+    def test_POST_DirtyDiapers_API(self):
+        url = get_endpoint("dirtydiapers")
+        postData = json.dumps({'time':'now', 'key':'mykey'})
         response = self.client.post(url, data=postData, headers=JSON_HEADERS)
 
-        assert not table_is_empty(self.client, url, "things")
+        assert not table_is_empty(self.client, "dirtydiapers")
+
+def post_resource(client, resource, data={'time':'now', 'key':'mykey'}):
+        get_response(client, resource, data, JSON_HEADERS)
+
+class TestPOSTAPIViews(TestCase):
+
+    def test_POST_WetDiapers_API(self):
+        resource, data = "wetdiapers", {'time':'now', 'key':'mykey'}
+        get_response(self.client, resource, data, JSON_HEADERS)
+        assert not table_is_empty(self.client, resource)
+
+    def test_POST_DirtyDiapers_API(self):
+        resource, data = "dirtydiapers", {'time':'now', 'key':'mykey'}
+        get_response(self.client, resource, data, JSON_HEADERS)
+        assert not table_is_empty(self.client, resource)
+
+    def test_POST_Weighings_API(self):
+        resource, data = "weighings", {'time':'now', 'key':'mykey', 'ounces':'99'}
+        get_response(self.client, resource, data, JSON_HEADERS)
+        assert not table_is_empty(self.client, resource)
+
+    def test_POST_Feedings_API(self):
+        resource, data = "feedings", {'time':'now', 'key':'mykey', 'ounces':'12'}
+        get_response(self.client, resource, data, JSON_HEADERS)
+        assert not table_is_empty(self.client, resource)
+
+    def test_POST_NapStarts_API(self):
+        resource, data = "napstarts", {'time':'now', 'key':'mykey'}
+        get_response(self.client, resource, data, JSON_HEADERS)
+        assert not table_is_empty(self.client, resource)
+
+    def test_POST_Wakings_API(self):
+        resource, data = "wakings", {'time':'now', 'key':'mykey'}
+        get_response(self.client, resource, data, JSON_HEADERS)
+        assert not table_is_empty(self.client, resource)
+
+
+class TestNapCreation(TestCase):
+    pass
+
+
+
 
 
 

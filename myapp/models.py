@@ -81,33 +81,53 @@ class NapStarts(db.Model):
 
     id   = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.DateTime)
+    note = db.Column(db.Text)
 
     user_id =db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship("User",
                             backref=db.backref('napstarts', order_by=id))
 
+    def __repr__(self):
+        return '<NapStart:'+self.time.strftime('%H:%M')+'>'
 ########################################################################
 class Wakings(db.Model):
     """"""
     __tablename__ = "wakings"
     id   = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.DateTime)
-    interval = db.Column(db.Interval)
     note = db.Column(db.Text)
 
-    napstart_id =db.Column(db.Integer, db.ForeignKey('napstarts.id'))
-    napstart = db.relationship("NapStarts",
-                            backref=db.backref('wakings', order_by=id))
+
 
     user_id =db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship("User",
                             backref=db.backref('wakings', order_by=id))
 
+    def __repr__(self):
+        return '<Waking:'+self.time.strftime('%H:%M')+'>'
+########################################################################
+class Naps(db.Model):
+    """"""
+    __tablename__ = "naps"
 
+    id   = db.Column(db.Integer, primary_key=True)
+    interval = db.Column(db.Interval)
 
-    def set_start(self, napstart):
-        self.napstart=napstart
-        self.interval = self.time - napstart.time
+    napstart_id =db.Column(db.Integer, db.ForeignKey('napstarts.id'))
+    start = db.relationship("NapStarts",
+                            backref=db.backref('nap', order_by=id))
+
+    waking_id =db.Column(db.Integer, db.ForeignKey('wakings.id'))
+    end = db.relationship("Wakings",
+                            backref=db.backref('nap', order_by=id))
+
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+        self.interval = end.time - start.time
+
+    def __repr__(self):
+        return '<Nap: '+str(self.interval.total_seconds()/60)+' min>'
 
 ########################################################################
 class Things(db.Model):
