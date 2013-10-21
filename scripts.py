@@ -1,5 +1,5 @@
 from flask.ext.script import Command, Option
-from myapp.models import db, Things, User
+from myapp.models import db, Users
 
 class AddUser(Command):
     "add a user"
@@ -18,7 +18,7 @@ class AddUser(Command):
         if not password:
             print "missing password"
             return
-        user = User(name, password)
+        user = Users(name, password)
         print "username: ", name
         if role:
             role = int(role)

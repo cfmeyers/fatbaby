@@ -8,8 +8,8 @@ import myapp.utils as utils
 
 
 def get_admin_user(db):
-    return db.session.query(models.User)\
-        .filter(models.User.name=='admin').first()
+    return db.session.query(models.Users)\
+        .filter(models.Users.name=='admin').first()
 
 def get_nap_starts(db):
     """returns only the NapStarts rows that are not connected to a Nap"""

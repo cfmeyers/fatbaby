@@ -1,7 +1,7 @@
 from flask import (render_template, flash, redirect,
                    views, session, url_for, request, g)
 from myapp import models, forms
-from myapp.models import lm, db, User
+from myapp.models import lm, db, Users
 from flask.ext.login import (login_user, logout_user,
                             current_user, login_required)
 
@@ -10,10 +10,10 @@ def before_request():
 
 @lm.user_loader
 def load_user(id):
-    return models.User.query.get(int(id))
+    return models.Users.query.get(int(id))
 
 def bad_validate(name, password):
-    user = db.session.query(User).filter(User.name==name).first()
+    user = db.session.query(Users).filter(Users.name==name).first()
 
     if user and user.check_password(password):
         return user

@@ -27,8 +27,8 @@ class Weighings(db.Model):
     time = db.Column(db.DateTime)
     ounces = db.Column(db.Float)
 
-    user_id =db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship("User",
+    user_id =db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship("Users",
                             backref=db.backref('weighings', order_by=id))
 
     def set_weight(self, oz=0.0, lbs=0.0):
@@ -43,8 +43,8 @@ class Feedings(db.Model):
     time = db.Column(db.DateTime)
     ounces = db.Column(db.Float)
 
-    user_id =db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship("User",
+    user_id =db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship("Users",
                             backref=db.backref('feedings', order_by=id))
 
 ########################################################################
@@ -56,8 +56,8 @@ class WetDiapers(db.Model):
     id   = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.DateTime)
 
-    user_id =db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship("User",
+    user_id =db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship("Users",
                             backref=db.backref('wetdiapers', order_by=id))
 
 
@@ -70,8 +70,8 @@ class DirtyDiapers(db.Model):
     time = db.Column(db.DateTime)
     magnitude = db.Column(db.Integer)
 
-    user_id =db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship("User",
+    user_id =db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship("Users",
                             backref=db.backref('dirtydiapers', order_by=id))
 
 ########################################################################
@@ -83,8 +83,8 @@ class NapStarts(db.Model):
     time = db.Column(db.DateTime)
     note = db.Column(db.Text)
 
-    user_id =db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship("User",
+    user_id =db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship("Users",
                             backref=db.backref('napstarts', order_by=id))
 
     def __repr__(self):
@@ -99,8 +99,8 @@ class Wakings(db.Model):
 
 
 
-    user_id =db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship("User",
+    user_id =db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship("Users",
                             backref=db.backref('wakings', order_by=id))
 
     def __repr__(self):
@@ -130,25 +130,8 @@ class Naps(db.Model):
         return '<Nap: '+str(self.interval.total_seconds()/60)+' min>'
 
 ########################################################################
-class Things(db.Model):
-    """"""
-    __tablename__ = "things"
-
-    id        = db.Column(db.Integer, primary_key=True)
-    name      = db.Column(db.String)
-
-
-    def __init__(self, name):
-        """"""
-        self.name = name.lower()
-
-    def __repr__(self):
-        if self.id:
-            return '<Thing#%d: %s>' % (self.id, self.name)
-        return '<Thing: %s>' % (self.name)
-
 ########################################################################
-class User(db.Model):
+class Users(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(64), unique = True)
     email = db.Column(db.String(120), unique = True)
@@ -163,7 +146,7 @@ class User(db.Model):
         return check_password_hash(self.pw_hash, password)
 
     def is_authenticated(self):
-        """Should return True unless the object represents a user that should not be allowed to authenticate for some reason. """
+        """Should return True unless the object represents a users that should not be allowed to authenticate for some reason. """
         return True
 
     def is_active(self):
@@ -175,7 +158,7 @@ class User(db.Model):
         return False
 
     def get_id(self):
-        """should return a unique identifier for user, in unicode format. """
+        """should return a unique identifier for users, in unicode format. """
         return unicode(self.id)
 
     def __init__(self, name, password):
@@ -184,5 +167,5 @@ class User(db.Model):
         self.pw_hash = generate_password_hash(password)
 
     def __repr__(self):
-        return '<User %r>' % (self.name)
+        return '<Users %r>' % (self.name)
 

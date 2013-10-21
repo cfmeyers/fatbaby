@@ -3,7 +3,7 @@ sys.path.append("../")
 from tests import TestCase, add_item_to_db
 from datetime import datetime, timedelta
 from myapp import models, utils
-from myapp.models import (db, User, DirtyDiapers, WetDiapers,
+from myapp.models import (db, Users, DirtyDiapers, WetDiapers,
                           NapStarts, Wakings, Weighings, Feedings)
 from myapp.api import views_api
 
@@ -14,14 +14,14 @@ def add_and_commit(item):
 class TestUser(TestCase):
 
     def add_User(self, name, password):
-        user = User(name, password)
+        user = Users(name, password)
         db.session.add(user)
         db.session.commit()
         return user
 
     def test_add_User_to_db(self):
         self.add_User("test", "password")
-        test = db.session.query(User).filter(User.name=="test").first()
+        test = db.session.query(Users).filter(Users.name=="test").first()
         assert test.check_password("password")
 
     def test_bad_validate(self):

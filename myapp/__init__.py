@@ -14,7 +14,7 @@ from myapp.web.views_web import (IndexView, LoginView,
                                 WeighingsWebView, NapsWebView)
 
 import config_dev
-from myapp.models import db, lm, User
+from myapp.models import db, lm, Users
 
 
 def reg_view(app, view, endpoint, url, methods=["GET", "POST"]):

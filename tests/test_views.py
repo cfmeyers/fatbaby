@@ -3,7 +3,7 @@ sys.path.append("../")
 
 from tests import TestCase, add_item_to_db
 from myapp import models
-from myapp.models import db, Things
+from myapp.models import db
 
 PATH              = "/api/v1/"
 JSON_HEADERS = {'Content-type': 'application/json'}
