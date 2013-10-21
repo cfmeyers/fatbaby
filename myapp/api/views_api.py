@@ -32,7 +32,7 @@ def parse_request_to_create_object(request):
     if "project" in request.json:
         inputDict["key"] = request.json["key"]
     if "time" in request.json:
-        inputDict["time"] = datetime.now()
+        inputDict["time"] = datetime.utcnow()
     if "ounces" in request.json:
         inputDict["ounces"] = float(request.json["ounces"])
 
