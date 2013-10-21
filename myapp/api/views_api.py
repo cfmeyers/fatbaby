@@ -6,6 +6,11 @@ from myapp.models import db
 from datetime import datetime
 import myapp.utils as utils
 
+
+def get_admin_user(db):
+    return db.session.query(models.User)\
+        .filter(models.User.name=='admin').first()
+
 def get_nap_starts(db):
     """returns only the NapStarts rows that are not connected to a Nap"""
     return db.session.query(models.NapStarts).filter(models.NapStarts.nap==None).all()
@@ -68,6 +73,9 @@ class APIView(MethodView):
             abort(400)
         modelName = self.get_model_name()
         item = self.create_item(self.get_input_dict())
+        admin = get_admin_user(db)
+        if admin:
+            item.user = admin
         db.session.add(item)
         db.session.commit()
         return jsonify( { modelName: "posted!" } )
@@ -178,11 +186,6 @@ class WakingsAPIView(APIView):
         return stop
 
 
-
-        #get match
-        #if match: create nap
-
-        # return models.get_or_create(db, models.Wakings, **inputDict)
 
 
 
