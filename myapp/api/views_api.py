@@ -85,27 +85,6 @@ class APIView(MethodView):
         modelName = self.get_model_name()
         return jsonify( { modelName: items } )
 
-class ThingsAPIView(APIView):
-    """
-    curl -i -H "Content-Type: application/json" -X POST -d '{"name":"pizza","key":"mykey" }' http://localhost:5000/api/v1/things
-
-    """
-
-    ##GET and POST both
-    def get_model_name(self): return "things"
-
-
-    ##POST only
-    def get_input_dict(self):
-        return parse_request_to_create_object(request)
-
-    def create_item(self, inputDict):
-        return models.get_or_create(db, models.Things, **inputDict)
-
-
-    ##GET only
-    def get_items(self): return [t.name for t in models.Things.query.all()]
-
 
 class DirtyDiapersAPIView(APIView):
     """

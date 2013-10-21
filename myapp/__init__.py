@@ -3,12 +3,12 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 from flask.ext.migrate import Migrate
 
-from myapp.api.views_api import (ThingsAPIView, DirtyDiapersAPIView,
+from myapp.api.views_api import (DirtyDiapersAPIView,
                                 WetDiapersAPIView, FeedingsAPIView,
                                 WeighingsAPIView, NapStartsAPIView,
                                 WakingsAPIView)
 
-from myapp.web.views_web import (ThingsWebView, IndexView, LoginView,
+from myapp.web.views_web import (IndexView, LoginView,
                                 LogoutView, before_request, DirtyDiapersWebView,
                                 WetDiapersWebView, FeedingsWebView,
                                 WeighingsWebView, NapsWebView)
@@ -25,7 +25,6 @@ def reg_view(app, view, endpoint, url, methods=["GET", "POST"]):
 
 def register_api_views(app):
     PATH = "/api/v1/"
-    app = reg_view(app, ThingsAPIView, "things_api", PATH+"things")
     app = reg_view(app, DirtyDiapersAPIView, "ddiapers_api", PATH+"dirtydiapers")
     app = reg_view(app, WetDiapersAPIView, "wdiapers_api", PATH+"wetdiapers")
     app = reg_view(app, FeedingsAPIView, "feedings_api", PATH+"feedings")
@@ -39,7 +38,6 @@ def register_web_views(app):
     app = reg_view(app, LogoutView,    "logout",   "/logout")
     app = reg_view(app, IndexView,     "/",        "/")
     app = reg_view(app, IndexView,     "index",    "/index")
-    app = reg_view(app, ThingsWebView, "things",   "/things")
     app = reg_view(app, DirtyDiapersWebView, "dirtydiapers",   "/dirtydiapers")
     app = reg_view(app, WetDiapersWebView, "wetdiapers",   "/wetdiapers")
     app = reg_view(app, FeedingsWebView, "feedings",   "/feedings")

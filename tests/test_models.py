@@ -3,7 +3,7 @@ sys.path.append("../")
 from tests import TestCase, add_item_to_db
 from datetime import datetime, timedelta
 from myapp import models, utils
-from myapp.models import (db, Things, User, DirtyDiapers, WetDiapers,
+from myapp.models import (db, User, DirtyDiapers, WetDiapers,
                           NapStarts, Wakings, Weighings, Feedings)
 from myapp.api import views_api
 
