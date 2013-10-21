@@ -156,7 +156,6 @@ class User(db.Model):
     pw_hash = db.Column(db.String(120))
 
 
-
     def set_password(self, password):
         self.pw_hash = generate_password_hash(password)
 
