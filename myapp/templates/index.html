@@ -1,6 +1,37 @@
 {% extends "base.html" %}
 
 {% block sub_content %}
-<p>Hello World</p>
+<h1>Today's Events</h1>
+<table class="table">
+<thead>
+    <tr>
+        <th>time</th>
+        <th>event</th>
+    </tr>
+</thead>
+    {% for event in objects %}
+        <tr>
+            <td>{{event.original.get_time_as_EST()}}</td>
+            {% if event.type=='Weighings' %}
+                <td>Weighed in at {{event.ounces}} ounces</td>
+            {% endif %}
+            {% if event.type=='Feedings' %}
+                <td>ate {{event.ounces}} ounces</td>
+            {% endif %}
+            {% if event.type=='WetDiapers' %}
+                <td>wet diaper</td>
+            {% endif %}
+            {% if event.type=='DirtyDiapers' %}
+                <td>dirty diaper</td>
+            {% endif %}
+            {% if event.type=='NapStarts' %}
+                <td>started nap</td>
+            {% endif %}
+            {% if event.type=='Wakings' %}
+                <td>woke up</td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+</table>
 
 {% endblock %}

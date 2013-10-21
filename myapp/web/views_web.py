@@ -1,6 +1,6 @@
 from flask import (render_template, flash, redirect,
                    views, session, url_for, request, g)
-from myapp import models, forms
+from myapp import models, forms, utils
 from myapp.models import lm, db, Users
 from flask.ext.login import (login_user, logout_user,
                             current_user, login_required)
@@ -26,7 +26,16 @@ class IndexView(views.View):
     methods = ["GET"]
 
     def dispatch_request(self):
-        return render_template("index.html")
+        objects = utils.get_displayable_objects([models.Weighings,
+                                                    models.Feedings,
+                                                    models.WetDiapers,
+                                                    models.DirtyDiapers,
+                                                    models.NapStarts,
+                                                    models.Wakings], db)
+
+
+
+        return render_template("index.html", objects=objects)
 
 class LoginView(views.View):
     """IndexView"""
@@ -105,7 +114,6 @@ class FeedingsWebView(ListView):
 class NapsWebView(ListView):
     def get_template_name(self): return "naps.html"
     def get_objects(self):return models.Naps.query.all()
-    # def get_objects(self):return "TEST"
     def get_title(self): return "Naps"
 
 class WeighingsWebView(ListView):
