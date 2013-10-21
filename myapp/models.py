@@ -1,10 +1,13 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
 from werkzeug.security import generate_password_hash, check_password_hash
 
 ROLE_USER = 0
 ROLE_ADMIN = 1
+
+EST_UTC_TIME_DIFF = timedelta(hours=5)
+
 
 db = SQLAlchemy()
 lm = LoginManager()
@@ -34,6 +37,11 @@ class Weighings(db.Model):
     def set_weight(self, oz=0.0, lbs=0.0):
         self.ounces = lbs*16 + oz
 
+    def get_time_as_EST(self):
+        if self.time:
+            est = self.time - EST_UTC_TIME_DIFF
+            return est.strftime('%a %d-%b, %H:%M:%S')
+
 ########################################################################
 class Feedings(db.Model):
     """"""
@@ -47,6 +55,10 @@ class Feedings(db.Model):
     user = db.relationship("Users",
                             backref=db.backref('feedings', order_by=id))
 
+    def get_time_as_EST(self):
+        if self.time:
+            est = self.time - EST_UTC_TIME_DIFF
+            return est.strftime('%a %d-%b, %H:%M:%S')
 ########################################################################
 
 class WetDiapers(db.Model):
@@ -61,6 +73,10 @@ class WetDiapers(db.Model):
                             backref=db.backref('wetdiapers', order_by=id))
 
 
+    def get_time_as_EST(self):
+        if self.time:
+            est = self.time - EST_UTC_TIME_DIFF
+            return est.strftime('%a %d-%b, %H:%M:%S')
 ########################################################################
 class DirtyDiapers(db.Model):
     """"""
@@ -74,6 +90,10 @@ class DirtyDiapers(db.Model):
     user = db.relationship("Users",
                             backref=db.backref('dirtydiapers', order_by=id))
 
+    def get_time_as_EST(self):
+        if self.time:
+            est = self.time - EST_UTC_TIME_DIFF
+            return est.strftime('%a %d-%b, %H:%M:%S')
 ########################################################################
 class NapStarts(db.Model):
     """"""
@@ -87,8 +107,17 @@ class NapStarts(db.Model):
     user = db.relationship("Users",
                             backref=db.backref('napstarts', order_by=id))
 
+
+    def get_time_as_EST(self):
+        if self.time:
+            est = self.time - EST_UTC_TIME_DIFF
+            return est.strftime('%a %d-%b, %H:%M:%S')
+
+
     def __repr__(self):
         return '<NapStart:'+self.time.strftime('%H:%M')+'>'
+
+
 ########################################################################
 class Wakings(db.Model):
     """"""
@@ -102,6 +131,13 @@ class Wakings(db.Model):
     user_id =db.Column(db.Integer, db.ForeignKey('users.id'))
     user = db.relationship("Users",
                             backref=db.backref('wakings', order_by=id))
+
+
+    def get_time_as_EST(self):
+        if self.time:
+            est = self.time - EST_UTC_TIME_DIFF
+            return est.strftime('%a %d-%b, %H:%M:%S')
+
 
     def __repr__(self):
         return '<Waking:'+self.time.strftime('%H:%M')+'>'
