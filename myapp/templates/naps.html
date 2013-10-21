@@ -11,8 +11,8 @@
 </thead>
     {% for nap in objects %}
         <tr>
-            <td>{{nap.start.time.strftime('%a %d-%b, %H:%M:%S')}}</td>
-            <td>{{nap.end.time.strftime('%a %d-%b, %H:%M:%S')}}</td>
+            <td>{{nap.get_time_as_EST()}}</td>
+            <td>{{nap.get_time_as_EST()}}</td>
         </tr>
     {% endfor %}
 </table>

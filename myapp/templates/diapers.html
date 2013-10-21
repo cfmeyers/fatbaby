@@ -3,7 +3,7 @@
 {% block sub_content %}
 
     {% for diaper in objects %}
-        <p>{{diaper.time}}</p>
+        <p>{{diaper.get_time_as_EST()}}</p>
     {% endfor %}
 
 {% endblock %}

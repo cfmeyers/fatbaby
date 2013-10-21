@@ -3,7 +3,7 @@
 {% block sub_content %}
 
     {% for weighing in objects %}
-        <p>{{weighing.time}} {{weighting.ounces}}</p>
+        <p>{{weighing.get_time_as_EST()}} {{weighting.ounces}}</p>
     {% endfor %}
 
 {% endblock %}

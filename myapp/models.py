@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 ROLE_USER = 0
 ROLE_ADMIN = 1
 
-EST_UTC_TIME_DIFF = timedelta(hours=5)
+EST_UTC_TIME_DIFF = timedelta(hours=4)
 
 
 db = SQLAlchemy()
