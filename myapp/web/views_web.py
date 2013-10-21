@@ -26,6 +26,8 @@ class IndexView(views.View):
     methods = ["GET"]
 
     def dispatch_request(self):
+        if not current_user.is_authenticated():
+            return redirect(url_for('login'))
         objects = utils.get_displayable_objects([models.Weighings,
                                                     models.Feedings,
                                                     models.WetDiapers,
@@ -85,7 +87,8 @@ class ListView(views.View):
         return render_template(self.get_template_name(), **context)
 
     def dispatch_request(self):
-
+        if not current_user.is_authenticated():
+            return redirect(url_for('login'))
         context = {'objects':self.get_objects(),'title':self.get_title()}
 
         return self.render_template(context)
