@@ -1,4 +1,5 @@
 {% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}fatbaby{% endblock %}
 
@@ -13,6 +14,7 @@
         <li><a href="/weighings">weight</a></li>
         <li><a href="/login">login</a></li>
         <li><a href="/logout">logout</a></li>
+
     </ul>
   </div>
 {% endblock %}
@@ -40,14 +42,16 @@
 
 </div>
 
-    {% if g.user %}
-      <p>USER is {{g.user.name}}</p>
-    {% endif %}
+
 
     {% block sub_content %}
 
     {% endblock %}
 
+    {% if g.user %}
+    <br>
+      <p>USER is {{g.user.name}}</p>
+    {% endif %}
   </div>
 
 {% endblock %}
