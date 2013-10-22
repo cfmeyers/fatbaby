@@ -1,8 +1,9 @@
 from collections import namedtuple
 from datetime import datetime, timedelta
+from pytz import timezone, utc
 
+EASTERN = timezone('US/Eastern')
 
-EST_UTC_TIME_DIFF = timedelta(hours=4)
 
 def add_item_to_db(db, model, **kwargs):
     item = get_or_create(db, model, **kwargs)
@@ -35,9 +36,12 @@ def get_displayable_objects(classList, db):
         objects = get_todays_objects(cl, db)
         if cl.__name__ == 'Weighings' or cl.__name__ == 'Feedings':
             for object in objects:
-                # time = object.time - EST_UTC_TIME_DIFF
-                time = object.time
-                displayables.append(Displayable(type=cl.__name__, ounces=object.ounces, time=time, original=object))
+                #create new datetime object that knows it's timezone is UTC
+                utcAwareTime = utc.localize(object.time)
+                estTime = utcAwareTime.astimezone(EASTERN)
+
+                # time = object.time
+                displayables.append(Displayable(type=cl.__name__, ounces=object.ounces, time=estTime, original=object))
         else:
             for object in objects:
                 displayables.append(Displayable(type=cl.__name__, ounces=None, time=object.time, original=object))
