@@ -41,11 +41,12 @@ def get_displayable_objects(classList, db):
                 utcAwareTime = utc.localize(object.time)
                 estTime = utcAwareTime.astimezone(EASTERN)
 
-                # time = object.time
                 displayables.append(Displayable(type=cl.__name__, ounces=object.ounces, time=estTime, original=object))
         else:
             for object in objects:
-                displayables.append(Displayable(type=cl.__name__, ounces=None, time=object.time, original=object))
+                utcAwareTime = utc.localize(object.time)
+                estTime = utcAwareTime.astimezone(EASTERN)
+                displayables.append(Displayable(type=cl.__name__, ounces=None, time=estTime, original=object))
 
     return sorted(displayables, key=lambda x: x.time)
 
