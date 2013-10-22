@@ -1,8 +1,9 @@
 from collections import namedtuple
 from datetime import datetime, timedelta
 from pytz import timezone, utc
+import pytz
 
-EASTERN = timezone('US/Eastern')
+EASTERN = pytz.timezone('US/Eastern')
 
 
 def add_item_to_db(db, model, **kwargs):
