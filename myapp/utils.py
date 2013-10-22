@@ -35,7 +35,8 @@ def get_displayable_objects(classList, db):
         objects = get_todays_objects(cl, db)
         if cl.__name__ == 'Weighings' or cl.__name__ == 'Feedings':
             for object in objects:
-                time = object.time - EST_UTC_TIME_DIFF
+                # time = object.time - EST_UTC_TIME_DIFF
+                time = object.time
                 displayables.append(Displayable(type=cl.__name__, ounces=object.ounces, time=time, original=object))
         else:
             for object in objects:
