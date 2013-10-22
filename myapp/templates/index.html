@@ -11,7 +11,7 @@
 </thead>
     {% for event in objects %}
         <tr>
-            <td>{{event.original.get_time_as_EST()}}</td>
+            <td>{{event.time.strftime('%H:%M')}}</td>
             {% if event.type=='Weighings' %}
                 <td>Weighed in at {{event.ounces}} ounces</td>
             {% endif %}
