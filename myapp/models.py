@@ -2,7 +2,10 @@ from datetime import datetime, timedelta
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
 from werkzeug.security import generate_password_hash, check_password_hash
+from pytz import timezone, utc
+import pytz
 
+EASTERN = pytz.timezone('US/Eastern')
 ROLE_USER = 0
 ROLE_ADMIN = 1
 
@@ -20,6 +23,9 @@ def get_or_create(db, model, **kwargs):
         instance = model(**kwargs)
         return instance
 
+def get_date_in_EST(naiveUTCDate):
+    utcAwareTime = utc.localize(naiveUTCDate)
+    return utcAwareTime.astimezone(EASTERN)
 
 ########################################################################
 class Weighings(db.Model):
@@ -39,8 +45,7 @@ class Weighings(db.Model):
 
     def get_time_as_EST(self):
         if self.time:
-            est = self.time - EST_UTC_TIME_DIFF
-            return est.strftime('%a %d-%b, %H:%M:%S')
+            return get_time_as_EST(self.time)
 
 ########################################################################
 class Feedings(db.Model):
@@ -57,8 +62,7 @@ class Feedings(db.Model):
 
     def get_time_as_EST(self):
         if self.time:
-            est = self.time - EST_UTC_TIME_DIFF
-            return est.strftime('%a %d-%b, %H:%M:%S')
+            return get_time_as_EST(self.time)
 ########################################################################
 
 class WetDiapers(db.Model):
@@ -75,8 +79,7 @@ class WetDiapers(db.Model):
 
     def get_time_as_EST(self):
         if self.time:
-            est = self.time - EST_UTC_TIME_DIFF
-            return est.strftime('%a %d-%b, %H:%M:%S')
+            return get_time_as_EST(self.time)
 ########################################################################
 class DirtyDiapers(db.Model):
     """"""
@@ -92,8 +95,7 @@ class DirtyDiapers(db.Model):
 
     def get_time_as_EST(self):
         if self.time:
-            est = self.time - EST_UTC_TIME_DIFF
-            return est.strftime('%a %d-%b, %H:%M:%S')
+            return get_time_as_EST(self.time)
 ########################################################################
 class NapStarts(db.Model):
     """"""
@@ -110,8 +112,7 @@ class NapStarts(db.Model):
 
     def get_time_as_EST(self):
         if self.time:
-            est = self.time - EST_UTC_TIME_DIFF
-            return est.strftime('%a %d-%b, %H:%M:%S')
+            return get_time_as_EST(self.time)
 
 
     def __repr__(self):
@@ -135,8 +136,7 @@ class Wakings(db.Model):
 
     def get_time_as_EST(self):
         if self.time:
-            est = self.time - EST_UTC_TIME_DIFF
-            return est.strftime('%a %d-%b, %H:%M:%S')
+            return get_time_as_EST(self.time)
 
 
     def __repr__(self):
@@ -165,7 +165,6 @@ class Naps(db.Model):
     def __repr__(self):
         return '<Nap: '+str(self.interval.total_seconds()/60)+' min>'
 
-########################################################################
 ########################################################################
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key = True)

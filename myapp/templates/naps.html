@@ -5,14 +5,13 @@
 <thead>
     <tr>
         <th>start</th>
-        <!-- <th style="width:800px">end</th> -->
         <th>end</th>
     </tr>
 </thead>
     {% for nap in objects %}
         <tr>
-            <td>{{nap.get_time_as_EST()}}</td>
-            <td>{{nap.get_time_as_EST()}}</td>
+            <td>{{nap.start.time}}</td>
+            <td>{{nap.end.time}}</td>
         </tr>
     {% endfor %}
 </table>

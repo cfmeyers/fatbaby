@@ -54,12 +54,6 @@ class LoginView(views.View):
             user = bad_validate(form.username.data, form.password.data)
             if user:
                 login_user(user, form.remember_me.data)
-                # flash('Login requested for username="'
-                #       + form.username.data
-                #       + '", Login requested for password="'
-                #       + form.password.data
-                #       + '", remember_me='
-                #       + str(form.remember_me.data))
                 flash('Welcome, '+form.username.data)
 
                 return redirect('/index')

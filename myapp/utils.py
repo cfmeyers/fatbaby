@@ -37,19 +37,20 @@ def get_displayable_objects(classList, db):
         objects = get_todays_objects(cl, db)
         if cl.__name__ == 'Weighings' or cl.__name__ == 'Feedings':
             for object in objects:
-                #create new datetime object that knows it's timezone is UTC
-                utcAwareTime = utc.localize(object.time)
-                estTime = utcAwareTime.astimezone(EASTERN)
-
+                estTime = get_date_in_EST(object.time)
                 displayables.append(Displayable(type=cl.__name__, ounces=object.ounces, time=estTime, original=object))
         else:
             for object in objects:
-                utcAwareTime = utc.localize(object.time)
-                estTime = utcAwareTime.astimezone(EASTERN)
-                displayables.append(Displayable(type=cl.__name__, ounces=None, time=estTime, original=object))
+                estTime = get_date_in_EST(object.time)
+                displayables.append(Displayable(type=cl.__name__, ounces=None,          time=estTime, original=object))
 
     return sorted(displayables, key=lambda x: x.time, reverse=True)
 
+
+def get_date_in_EST(naiveUTCDate):
+    #create new datetime object that knows it's timezone is UTC
+    utcAwareTime = utc.localize(naiveUTCDate)
+    return utcAwareTime.astimezone(EASTERN)
 
 
 
