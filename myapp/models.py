@@ -45,7 +45,7 @@ class Weighings(db.Model):
 
     def get_time_as_EST(self):
         if self.time:
-            return get_time_as_EST(self.time)
+            return get_date_in_EST(self.time)
 
 ########################################################################
 class Feedings(db.Model):
@@ -62,7 +62,7 @@ class Feedings(db.Model):
 
     def get_time_as_EST(self):
         if self.time:
-            return get_time_as_EST(self.time)
+            return get_date_in_EST(self.time)
 ########################################################################
 
 class WetDiapers(db.Model):
@@ -79,7 +79,7 @@ class WetDiapers(db.Model):
 
     def get_time_as_EST(self):
         if self.time:
-            return get_time_as_EST(self.time)
+            return get_date_in_EST(self.time)
 ########################################################################
 class DirtyDiapers(db.Model):
     """"""
@@ -95,7 +95,7 @@ class DirtyDiapers(db.Model):
 
     def get_time_as_EST(self):
         if self.time:
-            return get_time_as_EST(self.time)
+            return get_date_in_EST(self.time)
 ########################################################################
 class NapStarts(db.Model):
     """"""
@@ -112,7 +112,7 @@ class NapStarts(db.Model):
 
     def get_time_as_EST(self):
         if self.time:
-            return get_time_as_EST(self.time)
+            return get_date_in_EST(self.time)
 
 
     def __repr__(self):
@@ -136,7 +136,7 @@ class Wakings(db.Model):
 
     def get_time_as_EST(self):
         if self.time:
-            return get_time_as_EST(self.time)
+            return get_date_in_EST(self.time)
 
 
     def __repr__(self):

@@ -10,8 +10,8 @@
 </thead>
     {% for nap in objects %}
         <tr>
-            <td>{{nap.start.time}}</td>
-            <td>{{nap.end.time}}</td>
+            <td>{{nap.start.get_time_as_EST()}}</td>
+            <td>{{nap.end.get_time_as_EST()}}</td>
         </tr>
     {% endfor %}
 </table>
