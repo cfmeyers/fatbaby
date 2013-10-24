@@ -9,7 +9,7 @@ from datetime import datetime
 def before_request():
     g.user = current_user
     g.timeAsleep = utils.get_timedelta_dict(get_current_time_asleep())
-    # g.timeSinceLastSleep = get_current_time_since_last_sleep()
+    g.timeSinceLastSleep = utils.get_timedelta_dict(get_current_time_since_last_sleep())
 
 def get_current_time_asleep():
     now = datetime.utcnow()
@@ -21,8 +21,17 @@ def get_current_time_asleep():
 
     return None
 
-# def get_current_time_since_last_sleep():
-    # pass
+def get_current_time_since_last_sleep():
+    now = datetime.utcnow()
+    if g.timeAsleep is None:
+        naps = db.session.query(models.Naps).all()
+        if naps:
+            # mostRecentNap = utils.get_most_recent_object(naps)
+            napEnds = [nap.end for nap in naps]
+            napEnd = utils.get_most_recent_object(napEnds)
+            return now - napEnd.time
+
+    return None
 
 @lm.user_loader
 def load_user(id):

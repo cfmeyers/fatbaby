@@ -64,6 +64,16 @@
   {% endif %}
   </p>
 {% endif %}
+{% if g.timeSinceLastSleep %}
+  <p>Layla's been awake for
+  {% if g.timeSinceLastSleep.hours %}
+    {{g.timeSinceLastSleep.hours}},
+  {% endif %}
+  {% if g.timeSinceLastSleep.minutes %}
+    {{g.timeSinceLastSleep.minutes}} minutes.
+  {% endif %}
+  </p>
+{% endif %}
 
   <div class="jumbotron">
     <h1>{{title}}</h1>
