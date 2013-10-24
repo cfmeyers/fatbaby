@@ -63,10 +63,13 @@ def get_date_in_EST(naiveUTCDate):
 
 
 def get_timedelta_dict(delta):
-    s = delta.seconds
-    hours, remainder = divmod(s, 3600)
-    minutes, seconds = divmod(remainder, 60)
-    return {"hours":hours, "minutes":minutes, "seconds":seconds}
+    if delta != None:
+        s = delta.seconds
+        hours, remainder = divmod(s, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        return {"hours":hours, "minutes":minutes, "seconds":seconds}
+
+    return None
 
 
 
