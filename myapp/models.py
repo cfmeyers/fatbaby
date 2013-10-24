@@ -157,6 +157,13 @@ class Naps(db.Model):
     end = db.relationship("Wakings",
                             backref=db.backref('nap', order_by=id))
 
+    def get_interval_dict(self):
+        if self.interval:
+            s = self.interval.seconds
+            hours, remainder = divmod(s, 3600)
+            minutes, seconds = divmod(remainder, 60)
+            return {"hours":hours, "minutes":minutes, "seconds":seconds}
+
     def __init__(self, start, end):
         self.start = start
         self.end = end
