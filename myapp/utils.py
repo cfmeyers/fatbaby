@@ -12,13 +12,22 @@ def add_item_to_db(db, model, **kwargs):
     db.session.commit()
     return item
 
+def get_most_recent_object(objects, now=None):
+    """if using parameter now, ensure it's a UTC datetime object"""
+    if now is None:
+        now = datetime.utcnow()
+
+    return min(objects, key=lambda x:abs(x.time-now))
+
+
 def match_waking_with_napstart(startsUnfiltered, stop):
     """Only send in starts that have not already been matched yet"""
 
     #ensure there are no start times greater than the stop time
     starts = [event for event in startsUnfiltered if event.time < stop.time]
     if starts:
-        return min(starts, key=lambda x:abs(x.time-stop.time))
+        return get_most_recent_object(starts)
+        # return min(starts, key=lambda x:abs(x.time-stop.time))
     return None
 
 def get_todays_objects(cl, db):
@@ -51,6 +60,13 @@ def get_date_in_EST(naiveUTCDate):
     #create new datetime object that knows it's timezone is UTC
     utcAwareTime = utc.localize(naiveUTCDate)
     return utcAwareTime.astimezone(EASTERN)
+
+
+def get_timedelta_dict(delta):
+    s = delta.seconds
+    hours, remainder = divmod(s, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    return {"hours":hours, "minutes":minutes, "seconds":seconds}
 
 
 

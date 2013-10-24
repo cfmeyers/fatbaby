@@ -8,6 +8,21 @@ from datetime import datetime
 
 def before_request():
     g.user = current_user
+    g.timeAsleep = utils.get_timedelta_dict(get_current_time_asleep())
+    # g.timeSinceLastSleep = get_current_time_since_last_sleep()
+
+def get_current_time_asleep():
+    now = datetime.utcnow()
+    napStarts = db.session.query(models.NapStarts).all()
+    if napStarts:
+        start = utils.get_most_recent_object(napStarts)
+        if not start.nap:
+            return now - start.time
+
+    return None
+
+# def get_current_time_since_last_sleep():
+    # pass
 
 @lm.user_loader
 def load_user(id):

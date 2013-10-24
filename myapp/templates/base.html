@@ -46,32 +46,24 @@
       </div>
     </div>
 
-
-
-
-
-
-
-  <!-- <div class="navbar navbar-inverse navbar-fixed-top"> -->
-<!--   <div class="navbar navbar-inverse navbar-fixed-top">
-  <a class="navbar-brand" href="/">home</a>
-    <ul class="nav navbar-nav">
-        <li><a href="/dirtydiapers">dirty diapers</a></li>
-        <li><a href="/wetdiapers">wet diapers</a></li>
-        <li><a href="/feedings">feedings</a></li>
-        <li><a href="/naps">naps</a></li>
-        <li><a href="/weighings">weight</a></li>
-        <li><a href="/login">login</a></li>
-        <li><a href="/logout">logout</a></li>
-
-    </ul>
-  </div> -->
 {% endblock %}
 
 {% block content %}
 
+
+
 <div class="container">
 
+{% if g.timeAsleep %}
+  <p>Layla's been sleeping for
+  {% if g.timeAsleep.hours %}
+    {{g.timeAsleep.hours}},
+  {% endif %}
+  {% if g.timeAsleep.minutes %}
+    {{g.timeAsleep.minutes}} minutes.
+  {% endif %}
+  </p>
+{% endif %}
 
   <div class="jumbotron">
     <h1>{{title}}</h1>
