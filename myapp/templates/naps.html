@@ -6,12 +6,14 @@
     <tr>
         <th>start</th>
         <th>end</th>
+        <th>interval</th>
     </tr>
 </thead>
     {% for nap in objects %}
         <tr>
-            <td>{{nap.start.get_time_as_EST()}}</td>
-            <td>{{nap.end.get_time_as_EST()}}</td>
+            <td>{{nap.start.get_time_as_EST().strftime('%a, %b %d, %H:%M')}}</td>
+            <td>{{nap.end.get_time_as_EST().strftime('%H:%M')}}</td>
+            <td>{{nap.get_interval_dict()["seconds"]}}</td>
         </tr>
     {% endfor %}
 </table>
