@@ -11,7 +11,7 @@ from myapp.api.views_api import (DirtyDiapersAPIView,
 from myapp.web.views_web import (IndexView, LoginView,
                                 LogoutView, before_request, DirtyDiapersWebView,
                                 WetDiapersWebView, FeedingsWebView,
-                                WeighingsWebView, NapsWebView)
+                                WeighingsWebView, NapsWebView, RecordEventView)
 
 import config_dev
 from myapp.models import db, lm, Users
@@ -43,6 +43,7 @@ def register_web_views(app):
     app = reg_view(app, FeedingsWebView, "feedings",   "/feedings")
     app = reg_view(app, WeighingsWebView, "weighings",   "/weighings")
     app = reg_view(app, NapsWebView, "naps",   "/naps")
+    app = reg_view(app, RecordEventView, "record",   "/record")
     return app
 
 

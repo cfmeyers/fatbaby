@@ -11,3 +11,8 @@ class LoginForm(Form):
 
 
 
+class RecordEventForm(Form):
+    username = TextField('username', validators=[Required()])
+
+
+

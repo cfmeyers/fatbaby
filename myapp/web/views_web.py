@@ -4,6 +4,7 @@ from myapp import models, forms, utils
 from myapp.models import lm, db, Users
 from flask.ext.login import (login_user, logout_user,
                             current_user, login_required)
+from datetime import datetime
 
 def before_request():
     g.user = current_user
@@ -12,7 +13,7 @@ def before_request():
 def load_user(id):
     return models.Users.query.get(int(id))
 
-def bad_validate(name, password):
+def validate(name, password):
     user = db.session.query(Users).filter(Users.name==name).first()
 
     if user and user.check_password(password):
@@ -40,7 +41,7 @@ class IndexView(views.View):
         return render_template("index.html", objects=objects)
 
 class LoginView(views.View):
-    """IndexView"""
+    """Login View"""
     methods = ['GET', 'POST']
 
     def dispatch_request(self):
@@ -51,7 +52,7 @@ class LoginView(views.View):
         form = forms.LoginForm()
 
         if form.validate_on_submit():
-            user = bad_validate(form.username.data, form.password.data)
+            user = validate(form.username.data, form.password.data)
             if user:
                 login_user(user, form.remember_me.data)
                 flash('Welcome, '+form.username.data)
@@ -118,4 +119,47 @@ class WeighingsWebView(ListView):
     def get_template_name(self): return "weighings.html"
     def get_objects(self): return models.Weighings.query.all()
     def get_title(self): return "Weight"
+
+class RecordEventView(views.View):
+
+    methods = ['GET', 'POST']
+
+    def add_item_to_db(self, model, inputDict):
+        item = model(**inputDict)
+        db.session.add(item)
+        db.session.commit()
+
+
+    def dispatch_request(self):
+        if not current_user.is_authenticated():
+            return redirect(url_for('login'))
+
+        form = forms.RecordEventForm()
+
+        if request.method=='POST':
+            if request.form['btn']=='Wet Diaper':
+                self.add_item_to_db(models.WetDiapers, {"time":datetime.utcnow(), "user":g.user})
+                return redirect(url_for('index'))
+
+            if request.form['btn']=='Dirty Diaper':
+                self.add_item_to_db(models.DirtyDiapers, {"time":datetime.utcnow(), "user":g.user})
+                return redirect(url_for('index'))
+
+            if request.form['btn']=='Fell Asleep':
+                self.add_item_to_db(models.NapStarts, {"time":datetime.utcnow(), "user":g.user})
+                return redirect(url_for('index'))
+            return "error"
+
+
+        return render_template("record.html", form=form)
+
+
+
+
+
+
+
+
+
+
 

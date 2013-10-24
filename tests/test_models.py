@@ -24,13 +24,13 @@ class TestUser(TestCase):
         test = db.session.query(Users).filter(Users.name=="test").first()
         assert test.check_password("password")
 
-    def test_bad_validate(self):
-        from myapp.web.views_web import bad_validate
+    def test_validate(self):
+        from myapp.web.views_web import validate
         self.add_User("test", "password")
         self.add_User("test2", "notpassword")
-        assert bad_validate("test", "password")
-        assert not bad_validate("test2", "password")
-        assert bad_validate("test2", "notpassword")
+        assert validate("test", "password")
+        assert not validate("test2", "password")
+        assert validate("test2", "notpassword")
 
     def test_DirtyDiaper_User_Map(self):
         userTed = self.add_User("ted", "password")
