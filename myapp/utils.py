@@ -24,11 +24,20 @@ def match_waking_with_napstart(startsUnfiltered, stop):
     """Only send in starts that have not already been matched yet"""
 
     #ensure there are no start times greater than the stop time
-    starts = [event for event in startsUnfiltered if event.time < stop.time]
-    if starts:
-        return get_most_recent_object(starts)
-        # return min(starts, key=lambda x:abs(x.time-stop.time))
+    if startsUnfiltered:
+        starts = [event for event in startsUnfiltered if event.time < stop.time]
+        if starts:
+            return get_most_recent_object(starts)
     return None
+
+def build_nap(starts, stop, Naps):
+
+    matchedStart = match_waking_with_napstart(starts, stop)
+    if matchedStart:
+        nap = Naps(start=matchedStart, end=stop)
+        return nap
+    return None
+
 
 def get_todays_objects(cl, db):
     """ Given a sqlalchemy table class, return a list of all rows whose date field >= today's date
@@ -72,7 +81,9 @@ def get_timedelta_dict(delta):
     return None
 
 
-
+def get_nap_starts(db, cl):
+    """returns only the NapStarts rows that are not connected to a Nap"""
+    return db.session.query(cl).filter(cl.nap==None).all()
 
 
 

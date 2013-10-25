@@ -4,6 +4,7 @@ sys.path.append("../")
 from myapp import models, utils
 
 def test_match_waking_with_napstart():
+
     now = datetime.now()
     twoMinute = timedelta(minutes=2)
     starts = [models.NapStarts(time=now+i*twoMinute) for i in range(5)]

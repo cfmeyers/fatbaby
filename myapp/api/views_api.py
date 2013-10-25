@@ -11,10 +11,6 @@ def get_admin_user(db):
     return db.session.query(models.Users)\
         .filter(models.Users.name=='admin').first()
 
-def get_nap_starts(db):
-    """returns only the NapStarts rows that are not connected to a Nap"""
-    return db.session.query(models.NapStarts).filter(models.NapStarts.nap==None).all()
-
 
 def parse_request_to_create_object(request):
     """ given a json request object, return a default dict formatted to create objects
@@ -154,8 +150,9 @@ class WakingsAPIView(APIView):
     def get_model_name(self): return "wakings"
     def get_input_dict(self): return parse_request_to_create_object(request)
     def create_item(self, inputDict):
-        starts = get_nap_starts(db)
+
         stop = models.Wakings(**inputDict)
+        starts = utils.get_nap_starts(db, models.NapStarts)
         matchedStart = utils.match_waking_with_napstart(starts, stop)
         if matchedStart:
             db.session.add(stop)

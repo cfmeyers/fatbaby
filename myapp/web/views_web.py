@@ -136,7 +136,8 @@ class FeedingsWebView(ListView):
 
 class NapsWebView(ListView):
     def get_template_name(self): return "naps.html"
-    def get_objects(self):return models.Naps.query.all()
+    def get_objects(self):
+        return sorted(models.Naps.query.all(), key=lambda x: x.end.time, reverse=True)
     def get_title(self): return "Naps"
 
 class WeighingsWebView(ListView):
@@ -152,6 +153,7 @@ class RecordEventView(views.View):
         item = model(**inputDict)
         db.session.add(item)
         db.session.commit()
+        return item
 
 
     def dispatch_request(self):
@@ -171,6 +173,15 @@ class RecordEventView(views.View):
 
             if request.form['btn']=='Fell Asleep':
                 self.add_item_to_db(models.NapStarts, {"time":datetime.utcnow(), "user":g.user})
+                return redirect(url_for('index'))
+
+            if request.form['btn']=='Woke Up':
+                starts = utils.get_nap_starts(db, models.NapStarts)
+                stop = self.add_item_to_db(models.Wakings, {"time":datetime.utcnow(), "user":g.user})
+                nap = utils.build_nap(starts, stop, models.Naps)
+                if nap:
+                    db.session.add(nap)
+                    db.session.commit()
                 return redirect(url_for('index'))
             return "error"
 

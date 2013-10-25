@@ -4,7 +4,7 @@ from tests import TestCase, add_item_to_db
 from datetime import datetime, timedelta
 from myapp import models, utils
 from myapp.models import (db, Users, DirtyDiapers, WetDiapers,
-                          NapStarts, Wakings, Weighings, Feedings)
+                          NapStarts, Wakings, Weighings, Feedings, Naps)
 from myapp.api import views_api
 
 def add_and_commit(item):
@@ -83,11 +83,11 @@ class TestWetDiapers(TestCase):
 
 class TestNaps(TestCase):
     def test_Naps_interval(self):
-        now = datetime.now()
-        start = models.NapStarts(time=now)
-        newnow = datetime.now()
-        wake = models.Wakings(time=newnow)
-        nap = models.Naps(start, wake)
+        now = datetime.utcnow()
+        start = NapStarts(time=now)
+        newnow = datetime.utcnow()
+        wake = Wakings(time=newnow)
+        nap = Naps(start, wake)
         assert nap.interval == newnow - now
 
 
@@ -113,7 +113,8 @@ class TestNaps(TestCase):
         #     print start, start.nap
 
         # assert False
-        testStarts = views_api.get_nap_starts(db)
+        testStarts = utils.get_nap_starts(db, models.NapStarts)
+
 
         # print "test starts"
         for start in testStarts:
