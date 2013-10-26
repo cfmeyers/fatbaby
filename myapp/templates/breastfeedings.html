@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block sub_content %}
+
+    {% for feeding in objects %}
+        <p>{{feeding.get_time_as_EST()}} -> {{feeding.ounces}} ounces</p>
+    {% endfor %}
+
+{% endblock %}
