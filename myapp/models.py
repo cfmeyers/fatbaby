@@ -63,6 +63,24 @@ class Feedings(db.Model):
     def get_time_as_EST(self):
         if self.time:
             return get_date_in_EST(self.time)
+
+
+########################################################################
+class BreastFeedings(db.Model):
+    """"""
+
+    __tablename__ = "breastfeedings"
+
+    id   = db.Column(db.Integer, primary_key=True)
+    time = db.Column(db.DateTime)
+
+    user_id =db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship("Users",
+                            backref=db.backref('breastfeedings', order_by=id))
+
+    def get_time_as_EST(self):
+        if self.time:
+            return get_date_in_EST(self.time)
 ########################################################################
 
 class WetDiapers(db.Model):

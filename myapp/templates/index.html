@@ -18,6 +18,9 @@
             {% if event.type=='Feedings' %}
                 <td>ate {{event.ounces}} ounces</td>
             {% endif %}
+            {% if event.type=='BreastFeedings' %}
+                <td>breast fed</td>
+            {% endif %}
             {% if event.type=='WetDiapers' %}
                 <td>wet diaper</td>
             {% endif %}

@@ -55,6 +55,7 @@ class IndexView(views.View):
             return redirect(url_for('login'))
         objects = utils.get_displayable_objects([models.Weighings,
                                                     models.Feedings,
+                                                    models.BreastFeedings,
                                                     models.WetDiapers,
                                                     models.DirtyDiapers,
                                                     models.NapStarts,
@@ -134,6 +135,11 @@ class FeedingsWebView(ListView):
     def get_objects(self): return models.Feedings.query.all()
     def get_title(self): return "Feedings"
 
+class BreastFeedingsWebView(ListView):
+    def get_template_name(self): return "breastfeedings.html"
+    def get_objects(self): return models.BreastFeedings.query.all()
+    def get_title(self): return "Breast Feedings"
+
 class NapsWebView(ListView):
     def get_template_name(self): return "naps.html"
     def get_objects(self):
@@ -173,6 +179,10 @@ class RecordEventView(views.View):
 
             if request.form['btn']=='Fell Asleep':
                 self.add_item_to_db(models.NapStarts, {"time":datetime.utcnow(), "user":g.user})
+                return redirect(url_for('index'))
+
+            if request.form['btn']=='Breast Fed':
+                self.add_item_to_db(models.BreastFeedings, {"time":datetime.utcnow(), "user":g.user})
                 return redirect(url_for('index'))
 
             if request.form['btn']=='Woke Up':

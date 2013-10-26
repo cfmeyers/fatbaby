@@ -8,10 +8,12 @@
     <h1>Record Events</h1>
      <form action="" method="post" name="login">
         {{form.hidden_tag()}}
-        <p><input type="submit" name="btn" value="Wet Diaper"></p>
-        <p><input type="submit" name="btn" value="Dirty Diaper"></p>
-        <p><input type="submit" name="btn" value="Fell Asleep"></p>
-        <p><input type="submit" name="btn" value="Woke Up"></p>
-
+        <div class="btn-group-vertical">
+            <button type="submit" name="btn" value="Wet Diaper" class="btn btn-default btn-lg">Wet Diaper</button>
+            <button type="submit" name="btn" value="Dirty Diaper" class="btn btn-default btn-lg">Dirty Diaper</button>
+            <button type="submit" name="btn" value="Fell Asleep" class="btn btn-default btn-lg">Fell Asleep</button>
+            <button type="submit" name="btn" value="Woke Up" class="btn btn-default btn-lg">Woke Up</button>
+            <button type="submit" name="btn" value="Breast Fed" class="btn btn-default btn-lg">Breast Feeding</button>
+        </div>
     </form>
 {% endblock %}

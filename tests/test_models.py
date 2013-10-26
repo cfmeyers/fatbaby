@@ -99,23 +99,17 @@ class TestNaps(TestCase):
         for i, start in enumerate(starts[:-1]):
             stop = add_item_to_db(db, models.Wakings, time=(now+(2*i)*twoMinute))
             add_item_to_db(db, models.Naps, start=start, end=stop)
-
-
         naps = db.session.query(models.Naps).all()
         # print "Naps"
         # for nap in naps:
             # print nap, nap.start, nap.end
         starts_with_naps = [nap.start for nap in naps]
-
         # print "from the database"
         dbStarts = db.session.query(models.NapStarts).all()
         # for start in dbStarts:
         #     print start, start.nap
-
         # assert False
         testStarts = utils.get_nap_starts(db, models.NapStarts)
-
-
         # print "test starts"
         for start in testStarts:
             assert start not in starts_with_naps
