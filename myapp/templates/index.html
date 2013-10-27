@@ -13,10 +13,10 @@
         <tr>
             <td>{{event.time.strftime('%H:%M')}}</td>
             {% if event.type=='Weighings' %}
-                <td>Weighed in at {{event.ounces}} ounces</td>
+                <td>Weighed in at {{event.pounds}} pounds, {{event.ounces}} ounces</td>
             {% endif %}
             {% if event.type=='Feedings' %}
-                <td>ate {{event.ounces}} ounces</td>
+                <td>ate {{event.ounces}} ounces from bottle</td>
             {% endif %}
             {% if event.type=='BreastFeedings' %}
                 <td>breast fed</td>

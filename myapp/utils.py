@@ -4,7 +4,7 @@ from pytz import timezone, utc
 import pytz
 
 EASTERN = pytz.timezone('US/Eastern')
-
+Displayable = namedtuple('Displayable', 'type pounds ounces time original')
 
 def add_item_to_db(db, model, **kwargs):
     item = get_or_create(db, model, **kwargs)
@@ -49,18 +49,26 @@ def get_todays_objects(cl, db):
     return db.session.query(cl).filter(cl.time>today)
 
 def get_displayable_objects(classList, db):
-    Displayable = namedtuple('Displayable', 'type ounces time original')
     displayables = []
     for cl in classList:
         objects = get_todays_objects(cl, db)
-        if cl.__name__ == 'Weighings' or cl.__name__ == 'Feedings':
+        if cl.__name__ == 'Weighings':
             for object in objects:
                 estTime = get_date_in_EST(object.time)
-                displayables.append(Displayable(type=cl.__name__, ounces=object.ounces, time=estTime, original=object))
+                pounds = object.ounces // 16
+                ounces = object.ounces - pounds * 16
+                displayables.append(Displayable(type=cl.__name__,
+                    pounds=int(pounds), ounces=int(ounces), time=estTime, original=object))
+
+        if cl.__name__ == 'Feedings':
+            for object in objects:
+                estTime = get_date_in_EST(object.time)
+                displayables.append(Displayable(type=cl.__name__, pounds=None, ounces=object.ounces, time=estTime, original=object))
+
         else:
             for object in objects:
                 estTime = get_date_in_EST(object.time)
-                displayables.append(Displayable(type=cl.__name__, ounces=None,          time=estTime, original=object))
+                displayables.append(Displayable(type=cl.__name__, pounds=None, ounces=None, time=estTime, original=object))
 
     return sorted(displayables, key=lambda x: x.time, reverse=True)
 
