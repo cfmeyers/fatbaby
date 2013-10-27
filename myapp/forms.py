@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from wtforms import TextField, BooleanField
+from wtforms import TextField, BooleanField, DecimalField
 #Required is a wtf validator
 from wtforms.validators import Required
 
@@ -12,7 +12,9 @@ class LoginForm(Form):
 
 
 class RecordEventForm(Form):
-    username = TextField('username', validators=[Required()])
+    feeding = DecimalField('feeding')
+    weightPounds = DecimalField('weightPounds')
+    weightOunces = DecimalField('weightOunces')
 
 
 

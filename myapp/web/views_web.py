@@ -185,6 +185,36 @@ class RecordEventView(views.View):
                 self.add_item_to_db(models.BreastFeedings, {"time":datetime.utcnow(), "user":g.user})
                 return redirect(url_for('index'))
 
+            if request.form['btn']=='feeding':
+                try:
+                    ounces = float(form.feeding.data)
+                except:
+                    return redirect(url_for('index'))
+                if ounces:
+                    self.add_item_to_db(models.Feedings, {"time":datetime.utcnow(), "user":g.user, "ounces": ounces})
+                    return redirect(url_for('index'))
+
+
+            if request.form['btn']=='weighing':
+                total = 0.0
+                pounds, ounces = None, None
+                try:
+                    pounds = float(form.weightPounds.data)
+                except:
+                    pass
+                try:
+                    ounces = float(form.weightOunces.data)
+                except:
+                    pass
+
+                if pounds:
+                    total += pounds * 16
+
+                if ounces:
+                    total += ounces
+                self.add_item_to_db(models.Weighings, {"time":datetime.utcnow(), "user":g.user, "ounces": total})
+                return redirect(url_for('index'))
+
             if request.form['btn']=='Woke Up':
                 starts = utils.get_nap_starts(db, models.NapStarts)
                 stop = self.add_item_to_db(models.Wakings, {"time":datetime.utcnow(), "user":g.user})
