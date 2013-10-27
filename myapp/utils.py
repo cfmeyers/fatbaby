@@ -60,7 +60,7 @@ def get_displayable_objects(classList, db):
                 displayables.append(Displayable(type=cl.__name__,
                     pounds=int(pounds), ounces=int(ounces), time=estTime, original=object))
 
-        if cl.__name__ == 'Feedings':
+        elif cl.__name__ == 'Feedings':
             for object in objects:
                 estTime = get_date_in_EST(object.time)
                 displayables.append(Displayable(type=cl.__name__, pounds=None, ounces=object.ounces, time=estTime, original=object))
