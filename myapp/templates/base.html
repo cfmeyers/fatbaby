@@ -1,6 +1,11 @@
 {% extends "bootstrap/base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
+{% block head %}
+  {{super()}}
+  <link rel="shortcut icon" href="static/fatbaby.ico">
+  <link rel="apple-touch-icon" href="static/fatbaby.ico">
+{% endblock %}
 
 {% block styles %}
   {{super()}}
@@ -58,7 +63,7 @@
 {% if g.timeAsleep %}
   <p>Layla's been sleeping for
   {% if g.timeAsleep.hours %}
-    {{g.timeAsleep.hours}},
+    {{g.timeAsleep.hours}} hours,
   {% endif %}
   {% if g.timeAsleep.minutes %}
     {{g.timeAsleep.minutes}} minutes.
