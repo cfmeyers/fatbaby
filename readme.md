@@ -20,33 +20,33 @@ Fatbaby is a simple CRUD app for keeping track of a newborn's feeding, changing,
 After cloning, get everything started by opening up the python interpreter and typing
 
 ~~~.bash
-~/bones $  python run.py db init
+~/fatbaby $  python run.py db init
 ~~~
 
 This command creates the alembic migrations directory.
 Next, to create the first migration, type
 
 ~~~.bash
-~/bones $  python run.py db migrate
+~/fatbaby $  python run.py db migrate
 ~~~
 
 Your SQLite database file, `bones/myapp/myapp.db`, will get created by that command.
 Next, to upgrade type
 
 ~~~.bash
-~/bones $  python run.py db upgrade
+~/fatbaby $  python run.py db upgrade
 ~~~
 
 All these steps can be executed in one fell swoop with the `init.sh` script:
 
 ~~~bash
-~/bones $  bash init.sh
+~/fatbaby $  bash init.sh
 ~~~
 
 And finally, to start the server,
 
 ~~~.bash
-~/bones $  python run.py runserver
+~/fatbaby $  python run.py runserver
 ~~~
 
 ##Structure
