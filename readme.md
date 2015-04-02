@@ -1,6 +1,6 @@
-#Bones
+#Fatbaby
 
-Bones is a work-in-progress template for setting up a Flask project.  It uses
+Fatbaby is a simple CRUD app for keeping track of a newborn's feeding, changing, and napping schedule.  It is built using [Bones](https://github.com/cfmeyers/bones), a work-in-progress template for setting up a Flask project.  It uses
 
 -  [Flask-Bootstrap](https://github.com/mbr/flask-bootstrap)
 -  [Flask-SQLAlchemy](http://pythonhosted.org/Flask-SQLAlchemy/)
